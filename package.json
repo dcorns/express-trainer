@@ -1,0 +1,25 @@
+{
+  "name": "express-trainer",
+  "version": "1.0.0",
+  "description": "A branch progressive MEN stack trainer",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https:/www.github.com/dcorns/express-trainer.git"
+  },
+  "keywords": [
+    "mongo",
+    "express",
+    "node"
+  ],
+  "author": "Dale Corns",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.14.0",
+    "express": "^4.13.3",
+    "mongoose": "^4.1.8"
+  }
+}
