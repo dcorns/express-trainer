@@ -13,24 +13,20 @@ var express = require('express');
  */
 var app = express();
 /**
- * Sending a html page to the client
+ * Use express routing here and below. Here it is used to execute code for every route request before forwarding to next route
  */
 app.route('*')
   .get(function(req, res, next){
     console.log('Request was made');
     next();
   });
+/**
+ * Sending a html page to the client
+ */
 app.route('/')
   .get(function(req, res){
     res.sendFile('index.html', {root: __dirname + '/'});
   });
-//app.get('/', function(req, res){
-  /**
-   * Using res.sendFile specifying the filename and the options object which must include the root property at least
-   * __dirname is the directory in which the server is launched
-   */
-//  res.sendFile('index.html', {root: __dirname + '/'});
-//});
 /**
  * Set server port to the environment variable PORT setting or to port 3000
  */
