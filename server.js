@@ -21,6 +21,10 @@ var mongoose = require('mongoose');
  */
 var app = express();
 /**
+ * use for parsing json
+ */
+app.use(bodyParser);
+/**
  * Use express routing here and below. Here it is used to execute code for every route request before forwarding to next route
  */
 app.route('*')
@@ -39,6 +43,10 @@ app.route('/')
  * Set server port to the environment variable PORT setting or to port 3000
  */
 var port = process.env.PORT || 3000;
+/**
+ * Connect to the mongo database
+ */
+mongoose.connect('mongodb://localhost/database');
 /**
  * Starting up the server by running the express function listen(). We pass the port and a call back to the function.
  */
