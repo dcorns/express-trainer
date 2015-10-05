@@ -83,7 +83,16 @@ function testMongo(){
     }
   });
 
-
+  //User.remove({
+  //  _id: req.params.user_id
+  //}, function(err, user) {
+  //  if (err)
+  //    res.send(err);
+  //  res.json({
+  //    message: 'User deleted!'
+  //  });
+  //
+  //});
 
 
 }
