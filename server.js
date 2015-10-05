@@ -23,14 +23,48 @@ var User = require('./api/models/user');
 
 function testMongo(){
   var user = new User();
-  user.username = 'John Smith';
-  user.save(function saveUser(err){
-    if(err) {
+  //user.username = 'John Smith';
+  //user.save(function saveUser(err){
+  //  if(err) {
+  //    console.log(err);
+  //    return;
+  //  }
+  //  console.log('New user ID: ' + user.id);
+  //});
+
+  User.find(function getAllusers(err, users){
+    if(err){
       console.log(err);
       return;
     }
-    console.log('New user ID: ' + user.id);
+    console.log('User List: ' + users);
   });
+
+  User.findById('5612b8303d04c06360ebf090', function userById(err, user){
+    if(err){
+      console.log(err);
+      return;
+    }
+    console.log('Requested user: ' + user);
+  });
+
+  //User.findById('5612b8303d04c06360ebf090', function userById(err, user){
+  //  if(err){
+  //    console.log(err);
+  //    return;
+  //  }
+  //  console.log('Requested user: ' + user);
+  //  user.username = 'Bill Gates';
+  //  user.save(function updateUser(err){
+  //    if(err){
+  //      console.log(err);
+  //      return;
+  //    }
+  //    console.log('username now stored as ' + user.username);
+  //  })
+  //});
+
+
 }
 
 /**
