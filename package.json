@@ -18,8 +18,8 @@
   "author": "Dale Corns",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.14.0",
+    "body-parser": "^1.14.1",
     "express": "^4.13.3",
-    "mongoose": "^4.1.8"
+    "mongoose": "^4.1.9"
   }
 }

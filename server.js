@@ -9,6 +9,14 @@
  */
 var express = require('express');
 /**
+ * require body-parser for parsing post data
+ */
+var bodyParser = require('body-parser');
+/**
+ * require mongoose for communications with the mongo database
+ */
+var mongoose = require('mongoose');
+/**
  * Create express application using the express function
  */
 var app = express();
