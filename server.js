@@ -20,49 +20,70 @@ var mongoose = require('mongoose');
  * require the user model that was created with mongoose
  */
 var User = require('./api/models/user');
+/**
+ * Require prompt for test mongo features from the server side
+ */
+var prompt = require('prompt');
 
 function testMongo(){
-  var user = new User();
-  //user.username = 'John Smith';
-  //user.save(function saveUser(err){
-  //  if(err) {
-  //    console.log(err);
-  //    return;
-  //  }
-  //  console.log('New user ID: ' + user.id);
-  //});
-
-  User.find(function getAllusers(err, users){
-    if(err){
-      console.log(err);
-      return;
+  prompt.start();
+  prompt.get(['userIDorName', 'doWhat'], function(err, result){
+    var user = new User();
+    var userIDorName = result.userIDName || 'null';
+    console.log(userIDorName, result.doWhat);
+    if(userIdorName.substring(0,2) === 'ID'){
+      var userID = userIdorName.substring(2);
+      switch(result.doWhat){
+        case 'View':
+          User.findById(userID, function userById(err, user){
+            if(err){
+              console.log(err);
+              return;
+            }
+            console.log('Requested user: ' + user);
+          });
+          break;
+        case 'Update':
+          User.findById(userID, function userById(err, user){
+            if(err){
+              console.log(err);
+              return;
+            }
+            console.log('Requested user: ' + user);
+            user.username = userIDorName;
+            user.save(function updateUser(err){
+              if(err){
+                console.log(err);
+                return;
+              }
+              console.log('username now stored as ' + user.username);
+            });
+          });
+          break;
+      }
     }
-    console.log('User List: ' + users);
+    else if (result.doWhat !== 'ViewAll' && userIDorName){
+      user.username = userIDorName;
+      user.save(function saveUser(err){
+        if(err) {
+          console.log(err);
+          return;
+        }
+        console.log('New user ID: ' + user.id);
+      });
+    }
+    else{//View all
+      User.find(function getAllusers(err, users){
+        if(err){
+          console.log(err);
+          return;
+        }
+        console.log('User List: ' + users);
+      });
+    }
   });
 
-  User.findById('5612b8303d04c06360ebf090', function userById(err, user){
-    if(err){
-      console.log(err);
-      return;
-    }
-    console.log('Requested user: ' + user);
-  });
 
-  //User.findById('5612b8303d04c06360ebf090', function userById(err, user){
-  //  if(err){
-  //    console.log(err);
-  //    return;
-  //  }
-  //  console.log('Requested user: ' + user);
-  //  user.username = 'Bill Gates';
-  //  user.save(function updateUser(err){
-  //    if(err){
-  //      console.log(err);
-  //      return;
-  //    }
-  //    console.log('username now stored as ' + user.username);
-  //  })
-  //});
 
 
 }
