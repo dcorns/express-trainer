@@ -11,11 +11,28 @@ var express = require('express');
 /**
  * require body-parser for parsing post data
  */
-var bodyParser = require('body-parser');
+//var bodyParser = require('body-parser');
 /**
  * require mongoose for communications with the mongo database
  */
 var mongoose = require('mongoose');
+/**
+ * require the user model that was created with mongoose
+ */
+var User = require('./api/models/user');
+
+function testMongo(){
+  var user = new User();
+  user.username = 'John Smith';
+  user.save(function saveUser(err){
+    if(err) {
+      console.log(err);
+      return;
+    }
+    console.log('New user ID: ' + user.id);
+  });
+}
+
 /**
  * Create express application using the express function
  */
@@ -23,7 +40,7 @@ var app = express();
 /**
  * use for parsing json
  */
-app.use(bodyParser);
+//app.use(bodyParser);
 /**
  * Use express routing here and below. Here it is used to execute code for every route request before forwarding to next route
  */
@@ -38,6 +55,7 @@ app.route('*')
 app.route('/')
   .get(function(req, res){
     res.sendFile('index.html', {root: __dirname + '/'});
+    testMongo();
   });
 /**
  * Set server port to the environment variable PORT setting or to port 3000
