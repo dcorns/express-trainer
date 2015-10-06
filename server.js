@@ -116,6 +116,75 @@ app.route('/')
     res.sendFile('index.html', {root: __dirname + '/'});
   });
 /**
+ * Add user routes for json data
+ */
+app.route('/users')
+//create a user
+  .post(function(req, res) {
+    var user = new User();
+    user.username = req.body.username;
+
+    user.save(function(err) {
+      if (err)
+        res.send(err);
+
+      res.json({
+        message: 'User created!'
+      });
+    });
+  })
+
+//get all users
+  .get(function(req, res) {
+    User.find(function(err, users) {
+      if (err)
+        res.send(err);
+      res.json(users);
+    });
+  });
+
+//On routes that end in /users/:user_id
+app.route('/users/:user_id')
+//Find user by id users/561408625d6c28671146e1ec
+  .get(function(req, res) {
+    console.log('req: ' + req.params.user_id);
+    User.findById(req.params.user_id, function(err, user) {
+      if (err)
+        res.send(err);
+      res.json(user);
+    });
+  })
+
+  .put(function(req, res) {
+    console.dir(req.body);
+    User.findById(req.params.user_id, function(err, user) {
+      if (err)
+        res.send(err);
+      user.username = req.body.username;
+      user.save(function(err) {
+        if (err)
+          res.send(err);
+        res.json({
+          message: 'User updated!'
+        });
+      });
+    });
+  })
+
+  .delete(function(req, res) {
+    User.remove({
+      _id: req.params.user_id
+    }, function(err, user) {
+      if (err)
+        res.send(err);
+      res.json({
+        message: 'User deleted!'
+      });
+
+    });
+  });
+
+/**
  * Set server port to the environment variable PORT setting or to port 3000
  */
 var port = process.env.PORT || 3000;
@@ -134,5 +203,5 @@ var server = app.listen(port, 'localhost', function(){
   var port = server.address().port;
   var host = server.address().address;
   console.log('Server listening at http://' + host + ':' + port);
-  testMongo();
+  //testMongo();
 });
