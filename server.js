@@ -20,6 +20,7 @@ var mongoose = require('mongoose');
  * require the user model that was created with mongoose
  */
 var User = require('./api/models/user');
+var Article = require('./api/models/article');
 /**
  * Require prompt for test mongo features from the server side
  */
@@ -65,9 +66,29 @@ function testMongo(){
             _id: userID
           }, function(err, obj) {
             if (err) console.log(err);
-            console.log('User Deleted!');
+            console.log('User Delete');
           });
           break;
+        case 'ArticleAdd':
+          var article = new Article();
+          if(result.newName){
+            article.body = result.newName;
+            article.save(function(err){
+              if(err){
+                console.log(err);
+                return;
+              }
+              console.log(article.id);
+            });
+          }
+          break;
+        case 'ArticleView':
+          Article.find(function(err, data){
+          if(err){
+            console.log(err);
+          }
+          console.log(data);
+        });
       }
     }
     else if (result.doWhat !== 'ViewAll' && userIDorName){
