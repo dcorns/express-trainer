@@ -27,12 +27,12 @@ var prompt = require('prompt');
 
 function testMongo(){
   prompt.start();
-  prompt.get(['userIDorName', 'doWhat'], function(err, result){
+  prompt.get(['userIDorName', 'doWhat', 'newName'], function(err, result){
     var user = new User();
-    var userIDorName = result.userIDName || 'null';
+    var userIDorName = result.userIDorName || 'bla';
     console.log(userIDorName, result.doWhat);
-    if(userIdorName.substring(0,2) === 'ID'){
-      var userID = userIdorName.substring(2);
+    if(userIDorName.substring(0,2) === 'ID'){
+      var userID = userIDorName.substring(2);
       switch(result.doWhat){
         case 'View':
           User.findById(userID, function userById(err, user){
@@ -50,7 +50,7 @@ function testMongo(){
               return;
             }
             console.log('Requested user: ' + user);
-            user.username = userIDorName;
+            user.username = result.newName;
             user.save(function updateUser(err){
               if(err){
                 console.log(err);
@@ -58,6 +58,14 @@ function testMongo(){
               }
               console.log('username now stored as ' + user.username);
             });
+          });
+          break;
+        case 'Delete':
+          User.remove({
+            _id: userID
+          }, function(err, obj) {
+            if (err) console.log(err);
+            console.log('User Deleted!');
           });
           break;
       }
@@ -82,19 +90,6 @@ function testMongo(){
       });
     }
   });
-
-  //User.remove({
-  //  _id: req.params.user_id
-  //}, function(err, user) {
-  //  if (err)
-  //    res.send(err);
-  //  res.json({
-  //    message: 'User deleted!'
-  //  });
-  //
-  //});
-
-
 }
 
 /**
@@ -119,7 +114,6 @@ app.route('*')
 app.route('/')
   .get(function(req, res){
     res.sendFile('index.html', {root: __dirname + '/'});
-    testMongo();
   });
 /**
  * Set server port to the environment variable PORT setting or to port 3000
@@ -140,4 +134,5 @@ var server = app.listen(port, 'localhost', function(){
   var port = server.address().port;
   var host = server.address().address;
   console.log('Server listening at http://' + host + ':' + port);
+  testMongo();
 });
