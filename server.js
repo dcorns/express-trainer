@@ -11,7 +11,7 @@ var express = require('express');
 /**
  * require body-parser for parsing post data
  */
-//var bodyParser = require('body-parser');
+var bodyParser = require('body-parser');
 /**
  * require mongoose for communications with the mongo database
  */
@@ -99,7 +99,7 @@ var app = express();
 /**
  * use for parsing json
  */
-//app.use(bodyParser);
+app.use(bodyParser.json());
 /**
  * Use express routing here and below. Here it is used to execute code for every route request before forwarding to next route
  */
@@ -109,25 +109,24 @@ app.route('*')
     next();
   });
 /**
- * Sending a html page to the client
+ * Setup sending of all static assets to the client. Everything the page itself requests will be routed to the public directory.
  */
-app.route('/')
-  .get(function(req, res){
-    res.sendFile('index.html', {root: __dirname + '/'});
-  });
+app.use(express.static(__dirname + '/public'));
+
 /**
- * Add user routes for json data
+ * Add user routes for json data and CRUD
  */
 app.route('/users')
 //create a user
   .post(function(req, res) {
     var user = new User();
+    console.log('post');
+    console.dir(req.body);
     user.username = req.body.username;
-
+    console.log(user.username);
     user.save(function(err) {
       if (err)
         res.send(err);
-
       res.json({
         message: 'User created!'
       });
@@ -145,7 +144,6 @@ app.route('/users')
 
 //On routes that end in /users/:user_id
 app.route('/users/:user_id')
-//Find user by id users/561408625d6c28671146e1ec
   .get(function(req, res) {
     console.log('req: ' + req.params.user_id);
     User.findById(req.params.user_id, function(err, user) {
